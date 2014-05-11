@@ -1,0 +1,12 @@
+data <- read.table(file = "household_power_consumption.txt", sep = ";", skip = 66637, nrows = 2880,header=TRUE,stringsAsFactors=FALSE)
+names(data) <- c("Date","Time","Global_active_power","Global_reactive_power","Voltage","Global_intensity","Sub_metering_1","Sub_metering_2","Sub_metering_3")
+data$Date<-as.Date(data$Date,format='%d/%m/%Y')
+data$Time<-as.character(data$Time)
+data$datetime<-as.POSIXct(paste(data$Date,data$Time))
+with(data, plot(datetime,as.numeric(Sub_metering_1),col="black",ylab="Energy sub metering",xlab="",type="l"))
+with(data, lines(datetime,as.numeric(Sub_metering_2),col="red",ylab="Energy sub metering",xlab="",type="l"))
+with(data, lines(datetime,as.numeric(Sub_metering_3),col="blue",ylab="Energy sub metering",xlab="",type="l"))
+legend("topright",pch="-",col=c("black","red","blue"),legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),cex=0.8)
+dev.copy(png,file="plot3.png",width = 480, height = 480)
+dev.off()
+
